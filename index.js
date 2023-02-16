@@ -32,7 +32,7 @@ var contactList = [
 //get function for displaying the contacts
 
 app.get("/", function (req, res) {
-  //fetch th contacts
+  //fetching the contacts
 
   Contact.find({}, function (err, contacts) {
     if (err) {
@@ -91,13 +91,26 @@ app.post("/create-contact", function (req, res) {
 /*** Query Params ***/
 
 app.get("/delete-contact", function (req, res) {
-  console.log(req.query);
-  let phone = req.query.phone;
-  let contactIndex = contactList.findIndex((contact) => contact.phone == phone);
-  if (contactIndex != -1) {
-    contactList.splice(contactIndex, 1);
-  }
-  return res.redirect("back");
+  // console.log(req.query);
+  // let phone = req.query.phone;
+  // let contactIndex = contactList.findIndex((contact) => contact.phone == phone);
+  // if (contactIndex != -1) {
+  //   contactList.splice(contactIndex, 1);
+  // }
+  // return res.redirect("back");
+
+  // console.log(req.query);
+  // ** Get the ID from query in the url **//
+  let id = req.query.id;
+
+  // find the contact in the Data Base using id and delete it
+  Contact.findByIdAndDelete(id, function (err) {
+    if (err) {
+      console.log("error in deleting an object from database");
+      return;
+    }
+    return res.redirect("back");
+  });
 });
 
 app.listen(port, function (err) {
